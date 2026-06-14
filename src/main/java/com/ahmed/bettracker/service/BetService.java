@@ -7,6 +7,8 @@ import com.ahmed.bettracker.repository.BetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +25,10 @@ public class BetService {
         return repo.save(bet);
     }
 
-    public List<Bet> getAll(String sport, String status) {
-        if (sport != null) return repo.findBySport(sport);
-        if (status != null) return repo.findByStatus(Bet.BetStatus.valueOf(status.toUpperCase()));
-        return repo.findAll();
+    public Page<Bet> getAll(String sport, String status, Pageable pageable) {
+        if (sport != null) return repo.findBySport(sport, pageable);
+        if (status != null) return repo.findByStatus(Bet.BetStatus.valueOf(status.toUpperCase()), pageable);
+        return repo.findAll(pageable);
     }
 
     public Bet getById(Long id) {

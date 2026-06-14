@@ -1,12 +1,13 @@
 package com.ahmed.bettracker.repository;
 
 import com.ahmed.bettracker.model.Bet;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
 public interface BetRepository extends JpaRepository<Bet, Long> {
-    List<Bet> findBySport(String sport);
-    List<Bet> findByStatus(Bet.BetStatus status);
+    Page<Bet> findBySport(String sport, Pageable pageable);
+    Page<Bet> findByStatus(Bet.BetStatus status, Pageable pageable);
 }

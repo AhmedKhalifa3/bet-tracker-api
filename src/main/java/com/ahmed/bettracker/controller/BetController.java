@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.*;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/api/bets")
@@ -23,10 +25,16 @@ public class BetController {
     }
 
     @GetMapping
-    public List<Bet> getAll(
+    public Page<Bet> getAll(
             @RequestParam(required = false) String sport,
-            @RequestParam(required = false) String status) {
-        return service.getAll(sport, status);
+            @RequestParam(required = false) String status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "placedAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction) {
+        Sort sort = direction.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return service.getAll(sport, status, pageable);
     }
 
     @GetMapping("/{id}")
