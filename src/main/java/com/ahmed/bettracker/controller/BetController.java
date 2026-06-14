@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/bets")
@@ -17,7 +18,7 @@ public class BetController {
     private final BetService service;
 
     @PostMapping
-    public ResponseEntity<Bet> place(@RequestBody BetRequest req) {
+    public ResponseEntity<Bet> place(@Valid @RequestBody BetRequest req) {
         return ResponseEntity.status(201).body(service.placeBet(req));
     }
 
